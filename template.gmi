@@ -1,0 +1,15 @@
+# GemPlace
+A social experiment on Gemini. Board resets every day at 12:01 AM EST.
+
+=> /place Place a character
+
+### Map
+```
+{MAP}
+```
+
+
+
+Created by Alex White
+=> gemini://alextheuxguy.mooo.com Visit my capsule
+=> mailto:alextheuxguy@disroot.org Send feedback, suggestions or bugs

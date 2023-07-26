@@ -1,0 +1,20 @@
+# GemPlace
+A social experiment on Gemini. Board resets every Monday at 12:01 AM EST.
+
+```
+|=========================|
+|     ASCII ART NEEDED    |
+| SEE EMAIL BELOW TO HELP |
+|=========================|
+```
+
+## You've already placed today
+Come back tomorrow!
+
+=> /play Go back
+
+
+
+Created by Alex White
+=> gemini://alextheuxguy.mooo.com Visit my capsule
+=> mailto:alextheuxguy@disroot.org Send feedback, suggestions or bugs
