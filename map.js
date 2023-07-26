@@ -40,8 +40,8 @@ const PlaceChar = (x, y, char, DB, callback) => {
 
   if (
     char.length !== 1 ||
-    char.charCodeAt(0) < 33 ||
-    char.charCodeAt(0) > 125
+    char.charCodeAt(0) < 32 ||
+    char.charCodeAt(0) > 126
   ) {
     callback(false);
     return;
