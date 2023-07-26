@@ -12,6 +12,7 @@ const InitMap = (DB) => {
       );
       stmt.run();
       stmt.finalize();
+      console.info("Map initialized.");
     }
   }
 };
@@ -52,6 +53,7 @@ const PlaceChar = (x, y, char, DB, callback) => {
   );
   stmt.run();
   stmt.finalize();
+  console.info("Character placed.");
   callback(true);
 };
 
@@ -65,6 +67,7 @@ const GetMapString = (DB, callback) => {
       map[row.y][row.x] = row.char;
     },
     () => {
+      console.info("Map retrieved.");
       callback(mapString(map));
     }
   );

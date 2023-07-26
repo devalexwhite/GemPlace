@@ -28,6 +28,7 @@ InitDB(() => {
 
 const server = tls.createServer(options, (socket) => {
   socket.on("data", (stream) => {
+    console.info("Client connected");
     const request = stream.toString().trim();
 
     if (request.startsWith(`gemini://${HOST}/place`)) {
