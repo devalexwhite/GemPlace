@@ -23,5 +23,5 @@ GemPlace is a social experiment. Gemini users place ASCII characters on a shared
 
 
 Created by Alex White
-=> gemini://alextheuxguy.mooo.com Visit my capsule
+=> gemini://alextheuxguy.com Visit my capsule
 => mailto:alextheuxguy@disroot.org Send feedback, suggestions or bugs

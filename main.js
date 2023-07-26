@@ -6,7 +6,7 @@ const { HasUserPlaced, InsertUserPlaced } = require("./user");
 const schedule = require("node-schedule");
 
 const PORT = 1965;
-const HOST = "localhost";
+const HOST = "place.alextheuxguy.com";
 const TEMPLATE = fs.readFileSync("./template.gmi");
 
 const options = {
@@ -33,17 +33,27 @@ const server = tls.createServer(options, (socket) => {
 
     if (request.startsWith(`gemini://${HOST}/place`)) {
       if (!socket.getPeerCertificate().fingerprint) {
-        socket.write("60 text/gemini; charset=utf-8\r\n");
-        socket.end();
+	      try {
+		      socket.write("60 text/gemini; charset=utf-8\r\n");
+		      socket.end();
+	      } catch {
+		      console.error("Socket already closed");
+	      }
+	      return;
       }
 
       if (request.includes("?")) {
         const params = decodeURIComponent(request.split("?")[1]).split(" ");
 
         if (params.length != 2) {
-          socket.write(`30 gemini://${HOST}/error.gmi\r\n`);
-          socket.end();
-          return;
+		try {
+			socket.write(`30 gemini://${HOST}/error.gmi\r\n`);
+			socket.end();
+		}
+		catch {
+			console.error("Socket already closed");
+		}
+                    return;
         }
 
         const char = params[0];
@@ -57,9 +67,13 @@ const server = tls.createServer(options, (socket) => {
 
         HasUserPlaced(DB, socket.getPeerCertificate().fingerprint, (result) => {
           if (result) {
-            socket.write(`30 gemini://${HOST}/already_placed.gmi\r\n`);
-            socket.end();
-            return;
+		  try {
+			  socket.write(`30 gemini://${HOST}/already_placed.gmi\r\n`);
+			  socket.end();
+		  } catch {
+			  console.error("Socket already closed");
+		  }
+		  return;
           } else {
             map.PlaceChar(
               Number.parseInt(coordinates[0]),
@@ -72,14 +86,22 @@ const server = tls.createServer(options, (socket) => {
                     DB,
                     socket.getPeerCertificate().fingerprint,
                     () => {
-                      socket.write(`30 gemini://${HOST}/play\r\n`);
-                      socket.end();
-                      return;
+			    try {
+				    socket.write(`30 gemini://${HOST}/play\r\n`);
+				    socket.end();
+			    } catch {
+				    console.error("Socket already closed");
+			    }
+			    return;
                     }
                   );
                 } else {
-                  socket.write(`30 gemini://${HOST}/error.gmi\r\n`);
-                  socket.end();
+			try {
+				socket.write(`30 gemini://${HOST}/error.gmi\r\n`);
+				socket.end();
+			} catch {
+				console.error("Socket already closed");
+			}
                   return;
                 }
               }
@@ -87,39 +109,68 @@ const server = tls.createServer(options, (socket) => {
           }
         });
       } else {
-        socket.write(
-          "10 Enter an ASCII character to place, followed by coordinates. Example: '+ 0,5' places a + 0 from the left and 5 from the top.\r\n"
-        );
-        socket.end();
+	      try {
+		      socket.write(
+			      "10 Enter an ASCII character to place, followed by coordinates. Example: '+ 0,5' places a + 0 from the left and 5 from the top.\r\n"
+		      );
+		      socket.end();
+	      } catch {
+		      console.error("Socket already closed");
+	      }
+	      return
       }
     } else if (request.startsWith(`gemini://${HOST}/error`)) {
-      const file = fs.readFileSync("./error.gmi");
-      socket.write("20 text/gemini; charset=utf-8\r\n" + file);
-      socket.end();
+	    const file = fs.readFileSync("./error.gmi");
+	    try {
+
+		    socket.write("20 text/gemini; charset=utf-8\r\n" + file);
+		    socket.end();
+	    } catch {
+		    console.error("Socket already closed");
+	    }
     } else if (request.startsWith(`gemini://${HOST}/already_placed`)) {
-      const file = fs.readFileSync("./already_placed.gmi");
-      socket.write("20 text/gemini; charset=utf-8\r\n" + file);
-      socket.end();
+	    const file = fs.readFileSync("./already_placed.gmi");
+	    try {
+		    socket.write("20 text/gemini; charset=utf-8\r\n" + file);
+		    socket.end();
+	    } catch {
+		    console.error("Socket already closed");
+	    }
     } else if (request.startsWith(`gemini://${HOST}/play`)) {
       if (!socket.getPeerCertificate().fingerprint) {
-        socket.write("60 text/gemini; charset=utf-8\r\n");
-        socket.end();
+	      try {
+		      socket.write("60 text/gemini; charset=utf-8\r\n");
+		      socket.end();
+	      } catch {
+		      console.error("Socket already closed");
+	      }
+	      return
       }
 
       map.GetMapString(DB, (map) => {
         const mapTemplate = TEMPLATE.toString().replace("{MAP}", map);
-        socket.write("20 text/gemini; charset=utf-8\r\n" + mapTemplate);
-        socket.end();
+	      try {
+		      socket.write("20 text/gemini; charset=utf-8\r\n" + mapTemplate);
+		      socket.end();
+		      return
+	      } catch {
+		      console.error("Socket already closed");
+	      }
       });
     } else {
       const file = fs.readFileSync("./index.gmi");
-      socket.write("20 text/gemini; charset=utf-8\r\n" + file);
-      socket.end();
+	    try {
+		    socket.write("20 text/gemini; charset=utf-8\r\n" + file);
+		    socket.end();
+		    return
+	    } catch {
+		    console.error("Socket already closed");
+	    }
     }
   });
 });
 
-server.listen(PORT, HOST, () => {
+server.listen(PORT, "0.0.0.0", () => {
   console.info("Server started");
 });
 

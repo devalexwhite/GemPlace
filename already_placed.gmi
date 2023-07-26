@@ -16,5 +16,5 @@ Come back tomorrow!
 
 
 Created by Alex White
-=> gemini://alextheuxguy.mooo.com Visit my capsule
+=> gemini://alextheuxguy.com Visit my capsule
 => mailto:alextheuxguy@disroot.org Send feedback, suggestions or bugs

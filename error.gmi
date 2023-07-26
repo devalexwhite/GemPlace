@@ -20,5 +20,5 @@ Input format must be "A X,Y" where:
 
 
 Created by Alex White
-=> gemini://alextheuxguy.mooo.com Visit my capsule
+=> gemini://alextheuxguy.com Visit my capsule
 => mailto:alextheuxguy@disroot.org Send feedback, suggestions or bugs
