@@ -3,6 +3,7 @@ const fs = require("fs");
 const map = require("./map");
 const { InitDB, DB } = require("./db");
 const { HasUserPlaced, InsertUserPlaced } = require("./user");
+const schedule = require("node-schedule");
 
 const PORT = 1965;
 const HOST = "localhost";
