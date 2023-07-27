@@ -1,0 +1,8 @@
+# GemPlace - Community Log
+=> /play 🔙 Go back
+
+## Actions
+=> /guestlog/post 🗣️ Make a post
+
+## Entries (last 100 entries)
+{LOG}

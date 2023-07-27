@@ -12,17 +12,17 @@
 - - - - - - - - - - - - - - - - 
 ```
 
-GemPlace is a social experiment. Gemini users place ASCII characters on a shared grid.
-
+### GemPlace is a social experiment. 
+Gemini users place ASCII characters on a shared grid. The rules are:
 - You must have a client certificate
 - Each user can place one character a day
 - The map resets every Monday at 12:01 AM EST
 
-=> /play Join the fun
+## Play
+=> /play Enter GemPlace
 
-
-=> /changelog View changelog
-
+## About
 Created by Alex White
-=> gemini://alextheuxguy.com Visit my capsule
+=> /changelog View changelog
+=> gemini://alextheuxguy.com Visit Alex's capsule
 => mailto:alextheuxguy@disroot.org Send feedback, suggestions or bugs

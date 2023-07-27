@@ -1,0 +1,13 @@
+# GemPlace - The Grid
+=> / 🔙 Go back
+
+
+## Actions
+=> /place 📌 Place a ASCII character
+=> /guestlog 📝 Community log
+
+## Map
+```
+{MAP}
+```
+Board resets every Monday at 12:01 AM EST.

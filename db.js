@@ -11,6 +11,9 @@ const InitDB = (callback) => {
     DB.exec(
       "CREATE TABLE IF NOT EXISTS users (fingerprint TEXT PRIMARY KEY, lastActionDate TEXT)"
     );
+    DB.exec(
+      "CREATE TABLE IF NOT EXISTS guestbook (log_id INTEGER PRIMARY KEY, message TEXT NOT NULL, username TEXT NOT NULL, date DEFAULT CURRENT_DATE)"
+    );
 
     callback();
   });

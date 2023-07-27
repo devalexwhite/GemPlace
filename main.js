@@ -4,10 +4,10 @@ const map = require("./map");
 const { InitDB, DB } = require("./db");
 const { HasUserPlaced, InsertUserPlaced } = require("./user");
 const schedule = require("node-schedule");
+const { GetEntries, InsertLog } = require("./guestlog");
 
 const PORT = 1965;
 const HOST = "place.alextheuxguy.com";
-const TEMPLATE = fs.readFileSync("./template.gmi");
 
 const options = {
   key: fs.readFileSync("private-key.pem"),
@@ -29,6 +29,7 @@ InitDB(() => {
 const server = tls.createServer(options, (socket) => {
   socket.on("data", (stream) => {
     console.info("Client connected");
+
     const request = stream.toString().trim();
 
     if (request.startsWith(`gemini://${HOST}/place`)) {
@@ -74,37 +75,40 @@ const server = tls.createServer(options, (socket) => {
             }
             return;
           } else {
-            map.PlaceChar(
-              Number.parseInt(coordinates[0]),
-              Number.parseInt(coordinates[1]),
-              char,
-              DB,
-              (result) => {
-                if (result) {
-                  InsertUserPlaced(
-                    DB,
-                    socket.getPeerCertificate().fingerprint,
-                    () => {
-                      try {
-                        socket.write(`30 gemini://${HOST}/play\r\n`);
-                        socket.end();
-                      } catch {
-                        console.error("Socket already closed");
+            const x = Number.parseInt(coordinates[0]);
+            const y = Number.parseInt(coordinates[1]);
+            map.PlaceChar(x, y, char, DB, (result) => {
+              if (result) {
+                InsertUserPlaced(
+                  DB,
+                  socket.getPeerCertificate().fingerprint,
+                  () => {
+                    InsertLog(
+                      DB,
+                      socket.getPeerCertificate().subject.CN,
+                      `Placed "${char}" at ${x},${y}`,
+                      () => {
+                        try {
+                          socket.write(`30 gemini://${HOST}/play\r\n`);
+                          socket.end();
+                        } catch {
+                          console.error("Socket already closed");
+                        }
+                        return;
                       }
-                      return;
-                    }
-                  );
-                } else {
-                  try {
-                    socket.write(`30 gemini://${HOST}/error.gmi\r\n`);
-                    socket.end();
-                  } catch {
-                    console.error("Socket already closed");
+                    );
                   }
-                  return;
+                );
+              } else {
+                try {
+                  socket.write(`30 gemini://${HOST}/error.gmi\r\n`);
+                  socket.end();
+                } catch {
+                  console.error("Socket already closed");
                 }
+                return;
               }
-            );
+            });
           }
         });
       } else {
@@ -154,7 +158,8 @@ const server = tls.createServer(options, (socket) => {
       }
 
       map.GetMapString(DB, (map) => {
-        const mapTemplate = TEMPLATE.toString().replace("{MAP}", map);
+        const file = fs.readFileSync("./play.gmi");
+        const mapTemplate = file.toString().replace("{MAP}", map);
         try {
           socket.write("20 text/gemini; charset=utf-8\r\n" + mapTemplate);
           socket.end();
@@ -162,6 +167,42 @@ const server = tls.createServer(options, (socket) => {
         } catch {
           console.error("Socket already closed");
         }
+      });
+    } else if (request.startsWith(`gemini://${HOST}/guestlog/post`)) {
+      if (request.includes("?")) {
+        const message = decodeURIComponent(request.split("?")[1]);
+
+        InsertLog(DB, socket.getPeerCertificate().subject.CN, message, () => {
+          try {
+            socket.write(`30 gemini://${HOST}/guestlog.gmi\r\n`);
+            socket.end();
+          } catch {
+            console.error("Socket already closed");
+          }
+          return;
+        });
+      } else {
+        try {
+          socket.write("10 Enter your message\r\n");
+          socket.end();
+        } catch {
+          console.error("Socket already closed");
+        }
+        return;
+      }
+    } else if (request.startsWith(`gemini://${HOST}/guestlog`)) {
+      let file = fs.readFileSync("./guestlog.gmi");
+      GetEntries(DB, (entries) => {
+        let entriesString = entries
+          .map(
+            (entry) =>
+              `> ${entry.message}\n> - ${entry.username}, ${entry.date}`
+          )
+          .join("\n\n");
+        file = file.toString().replace("{LOG}", entriesString);
+        socket.write("20 text/gemini; charset=utf-8\r\n" + file);
+        socket.end();
+        return;
       });
     } else {
       const file = fs.readFileSync("./index.gmi");

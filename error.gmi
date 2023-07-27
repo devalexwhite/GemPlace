@@ -1,24 +1,7 @@
-# GemPlace
-A social experiment on Gemini. Board resets every Monday at 12:01 AM EST.
+# GemPlace - Input Error
+=> /play 🔙 Go back
 
-```
-|=========================|
-|     ASCII ART NEEDED    |
-| SEE EMAIL BELOW TO HELP |
-|=========================|
-```
-
-## Whoops, that's not quite right.
-Input format must be "A X,Y" where:
-
+### Input format must be "A X,Y" where:
 - A is a single ASCII character (between codes 33-125).
 - X is the integer X coordinate to place at.
 - Y is the integer Y coordinate to place at.
-
-=> /play Go back
-
-
-
-Created by Alex White
-=> gemini://alextheuxguy.com Visit my capsule
-=> mailto:alextheuxguy@disroot.org Send feedback, suggestions or bugs
