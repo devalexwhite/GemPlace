@@ -1,17 +1,27 @@
 const MAP_SIZE = 20;
 const BLANK_CHAR = "-";
 
+const FirstRunCheck = (DB) => {
+  DB.get("SELECT count(*) as count from map", (err, result) => {
+    console.info(`FirstRunCheck: DB size is ${result.count}.`);
+    if (result.count == 0) InitMap(DB);
+  });
+};
+
 const InitMap = (DB) => {
-  for (y in [...new Array(MAP_SIZE)]) {
-    for (x in [...new Array(MAP_SIZE)]) {
-      const stmt = DB.prepare(
-        `INSERT INTO map (char,x,y) VALUES ('${BLANK_CHAR}', ${x}, ${y})`
-      );
-      stmt.run();
-      stmt.finalize();
+  DB.run("DELETE FROM map", () => {
+    console.info("InitMap: DB cleared.");
+    for (y in [...new Array(MAP_SIZE)]) {
+      for (x in [...new Array(MAP_SIZE)]) {
+        const stmt = DB.prepare(
+          `INSERT INTO map (char,x,y) VALUES ('${BLANK_CHAR}', ${x}, ${y})`
+        );
+        stmt.run();
+        stmt.finalize();
+      }
     }
-  }
-  console.info("Map initialized.");
+    console.info("Map initialized.");
+  });
 };
 
 const mapString = (map) => {
@@ -74,4 +84,5 @@ module.exports = {
   InitMap,
   GetMapString,
   PlaceChar,
+  FirstRunCheck,
 };
