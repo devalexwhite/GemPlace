@@ -55,13 +55,10 @@ const PlaceChar = (x, y, char, DB, callback) => {
     return;
   }
 
-  const stmt = DB.prepare(
-    `INSERT INTO map (char,x,y) VALUES ('\x1b[31m${char}', ${x}, ${y})`
-  );
-  stmt.run();
-  stmt.finalize();
-  console.info("Character placed.");
-  callback(true);
+  DB.run("UPDATE map SET char=? WHERE x=? AND y=?", char, x, y, () => {
+    console.info("Character placed.");
+    callback(true);
+  });
 };
 
 const GetMapString = (DB, callback) => {
