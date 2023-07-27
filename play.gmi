@@ -3,7 +3,7 @@
 
 
 ## Actions
-=> /place 📌 Place a ASCII character
+=> /place 📌 Place an ASCII character
 => /guestlog 📝 Community wall
 
 ## Map
