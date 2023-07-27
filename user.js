@@ -1,7 +1,7 @@
 const HasUserPlaced = (DB, fingerprint, callback) => {
   DB.serialize(() => {
     DB.get(
-      "SELECT lastActionDate FROM users WHERE fingerprint=?",
+      "SELECT lastActionDate FROM users WHERE fingerprint=? AND lastActionDate=date()",
       fingerprint,
       (err, result) => {
         console.info("User retrieved.");

@@ -1,6 +1,3 @@
-const sqlite3 = require("sqlite3").verbose();
-const db = new sqlite3.Database(":memory:");
-
 const MAP_SIZE = 20;
 const BLANK_CHAR = "-";
 
@@ -12,9 +9,9 @@ const InitMap = (DB) => {
       );
       stmt.run();
       stmt.finalize();
-      console.info("Map initialized.");
     }
   }
+  console.info("Map initialized.");
 };
 
 const mapString = (map) => {
@@ -26,7 +23,7 @@ const mapString = (map) => {
     if (!map[y]) continue;
     mapString += `\n\n${y}\t`;
     for (x in map[y]) {
-      mapString += map[y][x] + "   ";
+      mapString += "[38;5;45m" + map[y][x] + "   ";
     }
   }
 
@@ -49,7 +46,7 @@ const PlaceChar = (x, y, char, DB, callback) => {
   }
 
   const stmt = DB.prepare(
-    `INSERT INTO map (char,x,y) VALUES ('${char}', ${x}, ${y})`
+    `INSERT INTO map (char,x,y) VALUES ('\x1b[31m${char}', ${x}, ${y})`
   );
   stmt.run();
   stmt.finalize();
