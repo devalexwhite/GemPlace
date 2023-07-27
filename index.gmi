@@ -22,7 +22,7 @@ Gemini users place ASCII characters on a shared grid. The rules are:
 => /play Enter GemPlace
 
 ## About
-Created by Alex White
+> Created by Alex White
 => /changelog View changelog
 => gemini://alextheuxguy.com Visit Alex's capsule
 => mailto:alextheuxguy@disroot.org Send feedback, suggestions or bugs
