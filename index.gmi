@@ -21,6 +21,7 @@ GemPlace is a social experiment. Gemini users place ASCII characters on a shared
 => /play Join the fun
 
 
+=> /changelog View changelog
 
 Created by Alex White
 => gemini://alextheuxguy.com Visit my capsule

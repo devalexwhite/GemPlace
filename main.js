@@ -134,6 +134,14 @@ const server = tls.createServer(options, (socket) => {
       } catch {
         console.error("Socket already closed");
       }
+    } else if (request.startsWith(`gemini://${HOST}/changelog`)) {
+      const file = fs.readFileSync("./changelog.gmi");
+      try {
+        socket.write("20 text/gemini; charset=utf-8\r\n" + file);
+        socket.end();
+      } catch {
+        console.error("Socket already closed");
+      }
     } else if (request.startsWith(`gemini://${HOST}/play`)) {
       if (!socket.getPeerCertificate().fingerprint) {
         try {

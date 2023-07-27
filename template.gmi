@@ -8,6 +8,7 @@ A social experiment on Gemini. Board resets every Monday at 12:01 AM EST.
 {MAP}
 ```
 
+=> / Back to homepage
 
 
 Created by Alex White

@@ -1,0 +1,28 @@
+# GemPlace
+A social experiment on Gemini. Board resets every Monday at 12:01 AM EST.
+
+```
+|=========================|
+|     ASCII ART NEEDED    |
+| SEE EMAIL BELOW TO HELP |
+|=========================|
+```
+
+=> / Back to homepage
+
+## Changelog
+
+### July 27, 2023
+- Fixed map reseting on server reboot
+- Fixed messages indicating reset daily, changed to weekly
+- Fixed usage of INSERT statement over UPDATE when placing character
+- Fixed broken has placed check that resulted in players only being able to place one character ever
+- Added changelog
+
+### July 26, 2023
+- GemPlace released!
+
+
+Created by Alex White
+=> gemini://alextheuxguy.com Visit my capsule
+=> mailto:alextheuxguy@disroot.org Send feedback, suggestions or bugs
