@@ -7,7 +7,7 @@ const schedule = require("node-schedule");
 const { GetEntries, InsertLog } = require("./guestlog");
 
 const PORT = 1965;
-const HOST = "place.alextheuxguy.com";
+const HOST = "localhost";
 
 const options = {
   key: fs.readFileSync("private-key.pem"),
