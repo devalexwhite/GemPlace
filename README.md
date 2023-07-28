@@ -2,7 +2,10 @@
 
 A social experiment on the Gemini Protocol.
 
-![Gemini client showing a grid of ASCII characters](screenshot.png)
+[View on Gemini](gemini://place.alextheuxguy.com)
+
+![Gemini client showing a grid of ASCII characters](screenshot-1.png)
+![Gemini client showing a community message board](screenshot-2.png)
 
 GemPlace seeks to provide a similiar experience to the popular /r/place on Reddit. Users presented an ASCII grid and are able to change one character a day. The grid resets at midnight every Monday.
 
