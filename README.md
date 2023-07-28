@@ -1,8 +1,6 @@
 # GemPlace
 
-A social experiment on the Gemini Protocol.
-
-[View on Gemini](gemini://place.alextheuxguy.com)
+A social experiment on the Gemini Protocol. Available at gemini://place.alextheuxguy.com
 
 ![Gemini client showing a grid of ASCII characters](screenshot-1.png)
 ![Gemini client showing a community message board](screenshot-2.png)
