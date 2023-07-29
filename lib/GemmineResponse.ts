@@ -92,7 +92,6 @@ export class GemmineResponse {
       } else {
         this.writeToSocket(`${ResponseType.OKAY} ${mimeType}\r\n`, false);
         this.writeToSocket(file, false, "utf-8");
-        this.socket.end();
       }
     } catch (e: any) {
       this.server.writeLog(
