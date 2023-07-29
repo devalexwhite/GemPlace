@@ -1,6 +1,8 @@
 import tls, { TLSSocket } from "tls";
 import { Gemmine, GemmineVerbosity } from "./Gemmine";
+import * as mime from "mime";
 import fs from "fs/promises";
+import * as Path from "path";
 
 export enum ResponseType {
   INPUT = 10,
@@ -18,10 +20,18 @@ export class GemmineResponse {
     this.server = server;
   }
 
-  private writeToSocket = (message: string, close: boolean = true) => {
+  private writeToSocket = (
+    message: string | Buffer,
+    close: boolean = true,
+    encoding?: BufferEncoding | null
+  ) => {
     try {
       if (this.socket.writable) {
-        this.socket.write(message);
+        if (encoding) {
+          this.socket.write(message, encoding);
+        } else {
+          this.socket.write(message);
+        }
         this.server.writeLog(
           "GemmineResponse:writeToSocket",
           "sent response",
@@ -74,14 +84,22 @@ export class GemmineResponse {
 
   public file = async (path: string) => {
     try {
-      const file = fs.readFile(path);
-    } catch (e) {
+      const file = await fs.readFile(path);
+
+      const mimeType = mime.getType(Path.parse(path).ext);
+      if (mimeType == null) {
+        throw new Error("unsupported file type");
+      } else {
+        this.writeToSocket(`${ResponseType.OKAY} ${mimeType}\r\n`, false);
+        this.writeToSocket(file, false, "utf-8");
+        this.socket.end();
+      }
+    } catch (e: any) {
       this.server.writeLog(
         "GemmineResponse:file",
         e.message,
         GemmineVerbosity.ERROR
       );
-    } finally {
       this.socket.end();
     }
   };
