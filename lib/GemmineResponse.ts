@@ -8,6 +8,8 @@ export enum ResponseType {
   INPUT = 10,
   OKAY = 20,
   REDIRECT = 30,
+  NOT_FOUND = 51,
+  GONE = 52,
   UNAUTHORIZED = 60,
 }
 
@@ -64,8 +66,8 @@ export class GemmineResponse {
     this.writeToSocket(responseString, true);
   };
 
-  public unauthorized = (message?: string) => {
-    const responseString = `${ResponseType.UNAUTHORIZED} ${message ?? ""}\r\n`;
+  public unauthorized = () => {
+    const responseString = `${ResponseType.UNAUTHORIZED}\r\n`;
 
     this.writeToSocket(responseString, true);
   };
@@ -82,11 +84,22 @@ export class GemmineResponse {
     this.writeToSocket(responseString, true);
   };
 
+  public notFound = (is_perm = false) => {
+    const responseString = `${
+      is_perm ? ResponseType.GONE : ResponseType.NOT_FOUND
+    }\r\n`;
+
+    this.writeToSocket(responseString, true);
+  };
+
   public file = async (path: string) => {
     try {
       const file = await fs.readFile(path);
+      const ext = Path.parse(path).ext;
 
-      const mimeType = mime.getType(Path.parse(path).ext);
+      const mimeType =
+        ext == ".gmi" ? "text/gemini; charset=utf-8" : mime.getType(ext);
+
       if (mimeType == null) {
         throw new Error("unsupported file type");
       } else {

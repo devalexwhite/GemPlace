@@ -11,7 +11,7 @@ export enum GemmineVerbosity {
 
 interface RouteHandler {
   route: string;
-  handler: (response: GemmineResponse, request: any) => void;
+  handler: (response: GemmineResponse, request: GemmineRequest) => void;
 }
 
 export interface GemmineConfig {
@@ -84,7 +84,7 @@ export class Gemmine {
 
   public get = (
     route: string,
-    callback: (response: GemmineResponse, request: any) => void
+    callback: (response: GemmineResponse, request: GemmineRequest) => void
   ) => {
     this.routes.push({ route, handler: callback } as RouteHandler);
   };
@@ -115,7 +115,7 @@ export class Gemmine {
             "socket opened",
             GemmineVerbosity.INFO
           );
-          const request = new GemmineRequest(this, socket, stream);
+          const request = new GemmineRequest(socket, stream);
           const response = new GemmineResponse(this, socket);
 
           const handler = this.findRouteHandler(request);
@@ -127,6 +127,7 @@ export class Gemmine {
               GemmineVerbosity.INFO
             );
           } else {
+            response.notFound();
             this.writeLog(
               "Gemmine:listen",
               "no matching handler",
