@@ -91,7 +91,7 @@ export class GemmineResponse {
         throw new Error("unsupported file type");
       } else {
         this.writeToSocket(`${ResponseType.OKAY} ${mimeType}\r\n`, false);
-        this.writeToSocket(file, false, "utf-8");
+        this.writeToSocket(file, true, "utf-8");
       }
     } catch (e: any) {
       this.server.writeLog(
